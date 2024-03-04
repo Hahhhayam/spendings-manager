@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <Folder Include="DTO\Currency\" />
+    <Folder Include="DTO\Debt\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Mapping\" />
-    <Folder Include="Services\" />
     <Folder Include="UseCases\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
 
   <ItemGroup>
