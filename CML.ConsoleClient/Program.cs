@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DAL.Context;
 using CML.ConsoleClient.Core;
+using Mapster;
+using MapsterMapper;
+using BLL.Services;
 
 var currentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..");
 
@@ -24,6 +27,16 @@ var builder = Host.CreateDefaultBuilder()
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
         services.AddSingleton<Application>();
+
+        services.AddSingleton(TypeAdapterConfig.GlobalSettings);
+        services.AddScoped<IMapper, ServiceMapper>();
+        services.AddScoped<DebtService>();
+        services.AddScoped<TransactionsService>();
+        services.AddScoped<CurrencyService>();
+        services.AddScoped<TagService>();
+        services.AddScoped<MoneyFormatService>();
+        services.AddScoped<PersonService>();
+        
     })
     .Build();
 
