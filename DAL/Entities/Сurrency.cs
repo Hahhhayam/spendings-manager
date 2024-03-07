@@ -8,7 +8,8 @@ namespace DAL.Entities
         [Required]
         public string Name { get; set; } = null!;
 
-        // add Currency sign
+        [Required]
+        public string Acronym { get; set; } = null!;
 
         public List<Transaction> Transactions { get; set; } = null!;
     }
