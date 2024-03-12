@@ -43,3 +43,4 @@ var builder = Host.CreateDefaultBuilder()
 builder.Start();
 
 var app = builder.Services.GetService<Application>();
+app.Run();
