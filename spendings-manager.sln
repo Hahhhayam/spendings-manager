@@ -10,13 +10,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{0
 		{0A65B6EC-075E-44A8-868D-885FB570875B} = {0A65B6EC-075E-44A8-868D-885FB570875B}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CML.ConsoleClient", "CML.ConsoleClient\CML.ConsoleClient.csproj", "{1367E602-20BB-4B57-8CD5-CBE17508251A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EEDF6C8-0B59-4BBD-8995-7D89F00AC77A}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		appsettings.json = appsettings.json
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL.ConsoleClient", "PL.ConsoleClient\PL.ConsoleClient.csproj", "{F2EADAAB-C89A-421B-A17F-DEEF9776CD8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +31,10 @@ Global
 		{0FA63ECA-66B7-43F6-A9CE-1B014844D3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FA63ECA-66B7-43F6-A9CE-1B014844D3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FA63ECA-66B7-43F6-A9CE-1B014844D3E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1367E602-20BB-4B57-8CD5-CBE17508251A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1367E602-20BB-4B57-8CD5-CBE17508251A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1367E602-20BB-4B57-8CD5-CBE17508251A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1367E602-20BB-4B57-8CD5-CBE17508251A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2EADAAB-C89A-421B-A17F-DEEF9776CD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2EADAAB-C89A-421B-A17F-DEEF9776CD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2EADAAB-C89A-421B-A17F-DEEF9776CD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2EADAAB-C89A-421B-A17F-DEEF9776CD8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
