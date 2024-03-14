@@ -1,4 +1,5 @@
-﻿using BLL.DTO.Tag;
+﻿using System.ComponentModel.DataAnnotations;
+using BLL.DTO.Tag;
 using BLL.Exceptions;
 using BLL.Services.Abstracts;
 using DAL.Context;
@@ -11,22 +12,30 @@ namespace BLL.Services
 {
     public class TagService : ContextAccess
     {
-        public TagService(SMDbContext context) : base(context)
+        private readonly ValidationContext validationContext;
+
+        public TagService(
+            SMDbContext context,
+            ValidationContext validationContext)
+            : base(context)
         {
+            this.validationContext = validationContext;
         }
 
         public TagDTO Create(CreateTagDTO dto)
         {
+            Validator.ValidateObject(dto, this.validationContext);
+
             Tag toCreate = dto.Adapt<Tag>();
-            _context.Add(toCreate);
-            _context.SaveChanges();
+            this.context.Add(toCreate);
+            this.context.SaveChanges();
 
             return toCreate.Adapt<TagDTO>();
         }
 
         public TagDTO Get(int id)
         {
-            Tag received = _context.Tags.GetById(id)
+            Tag received = this.context.Tags.GetById(id)
                     ?? throw new EntityNotFoundException(typeof(Tag));
 
             return received.Adapt<TagDTO>();
@@ -34,8 +43,8 @@ namespace BLL.Services
 
         public IList<TagDTO> GetAll()
         {
-            List<TagDTO> result = new();
-            foreach (var tag in _context.Tags.AsNoTracking().ToList())
+            List<TagDTO> result = new ();
+            foreach (var tag in this.context.Tags.AsNoTracking().ToList())
             {
                 result.Add(tag.Adapt<TagDTO>());
             }
@@ -45,20 +54,20 @@ namespace BLL.Services
 
         public void Delete(int id)
         {
-            Tag toDelete = _context.Tags.GetById(id)
+            Tag toDelete = this.context.Tags.GetById(id)
                     ?? throw new EntityNotFoundException(typeof(Tag));
-
-            _context.Remove(toDelete);
-            _context.SaveChanges();
+            this.context.Remove(toDelete);
+            this.context.SaveChanges();
         }
 
         public TagDTO Update(int id, TagUpdateDTO dto)
         {
-            Tag toUpdate = _context.Tags.SingleOrDefault(e => e.Id == id)
-                    ?? throw new EntityNotFoundException(typeof(Tag));
+            Validator.ValidateObject(dto, this.validationContext);
 
+            Tag toUpdate = this.context.Tags.SingleOrDefault(e => e.Id == id)
+                    ?? throw new EntityNotFoundException(typeof(Tag));
             toUpdate.Adapt(dto);
-            _context.SaveChanges();
+            this.context.SaveChanges();
 
             return toUpdate.Adapt<TagDTO>();
         }

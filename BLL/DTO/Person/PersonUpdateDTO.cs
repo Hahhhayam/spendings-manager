@@ -5,6 +5,5 @@ namespace BLL.DTO.Person
         public string? Name { get; set; }
 
         public string? Contact { get; set; }
-
     }
 }
