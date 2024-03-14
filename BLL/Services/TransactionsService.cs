@@ -7,44 +7,54 @@ using DAL.Entities;
 using DAL.QueryExtensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Services
 {
     public class TransactionsService : ContextAccess
     {
-        public TransactionsService(SMDbContext context) : base(context)
+        private readonly ValidationContext validationContext;
+
+        public TransactionsService(
+            SMDbContext context,
+            ValidationContext validationContext)
+            : base(context)
         {
+            this.validationContext = validationContext;
         }
 
-        public TransactionDTO Create(CreateTransactionDTO dto) 
+        public TransactionDTO Create(CreateTransactionDTO dto)
         {
+            Validator.ValidateObject(dto, this.validationContext);
+
             Transaction toCreate = dto.Adapt<Transaction>();
-            _context.Add(toCreate);
-            _context.SaveChanges();
+
+            this.context.Add(toCreate);
+            this.context.SaveChanges();
 
             return toCreate.Adapt<TransactionDTO>();
         }
 
         public TransactionDTO Get(int id)
         {
-            Transaction received = _context.Transactions.GetById(id)
+            Transaction received = this.context.Transactions.GetById(id)
                     ?? throw new EntityNotFoundException(typeof(Transaction));
 
             return received.Adapt<TransactionDTO>();
         }
 
-        public TransactionNestedDTO GetNested(int id) 
+        public TransactionNestedDTO GetNested(int id)
         {
-            var transaction = _context.Transactions.GetById(id)
+            var transaction = this.context.Transactions.GetById(id)
                     ?? throw new EntityNotFoundException(typeof(Transaction));
 
-            var currency = _context.Currencies.GetById(transaction.CurrencyId)
+            var currency = this.context.Currencies.GetById(transaction.CurrencyId)
                     ?? throw new EntityNotFoundException(typeof(Currency));
 
-            var format = _context.MoneyFormats.GetById(transaction.FormatId)
+            var format = this.context.MoneyFormats.GetById(transaction.FormatId)
                     ?? throw new EntityNotFoundException(typeof(MoneyFormat));
 
-            var tags = _context.TagTransactions
+            var tags = this.context.TagTransactions
                 .Where(tt => tt.TransactionId == id)
                 .Include(tt => tt.Tag)
                 .Select(tt => tt.Tag.Adapt<TagDTO>())
@@ -64,22 +74,22 @@ namespace BLL.Services
             };
         }
 
-        public void Delete(int id) 
+        public void Delete(int id)
         {
-            Transaction toDelete = _context.Transactions.SingleOrDefault(e => e.Id == id)
+            Transaction toDelete = this.context.Transactions.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Transaction));
-
-            _context.Remove(toDelete);
-            _context.SaveChanges();
+            this.context.Remove(toDelete);
+            this.context.SaveChanges();
         }
 
-        public TransactionDTO Update(int id, TransactionUpdateDTO dto) 
+        public TransactionDTO Update(int id, TransactionUpdateDTO dto)
         {
-            Transaction toUpdate = _context.Transactions.GetById(id)
-                    ?? throw new EntityNotFoundException(typeof(Transaction));
+            Validator.ValidateObject(dto, this.validationContext);
 
+            Transaction toUpdate = context.Transactions.GetById(id)
+                    ?? throw new EntityNotFoundException(typeof(Transaction));
             toUpdate.Adapt(dto);
-            _context.SaveChanges();
+            this.context.SaveChanges();
 
             return toUpdate.Adapt<TransactionDTO>();
         }
