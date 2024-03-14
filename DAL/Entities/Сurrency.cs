@@ -1,8 +1,11 @@
-﻿using DAL.Entities.Abstractions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DAL.Entities.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Entities
 {
+    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(Acronym), IsUnique = true)]
     public class Currency : BaseEntity
     {
         [Required]
