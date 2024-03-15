@@ -1,4 +1,5 @@
-﻿using BLL.DTO.Tag;
+﻿using System.ComponentModel.DataAnnotations;
+using BLL.DTO.Tag;
 using BLL.DTO.Transaction;
 using BLL.Exceptions;
 using BLL.Services.Abstracts;
@@ -7,7 +8,6 @@ using DAL.Entities;
 using DAL.QueryExtensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Services
 {

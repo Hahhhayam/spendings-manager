@@ -42,13 +42,9 @@ namespace BLL.Services
 
         public IEnumerable<CurrencyDTO> GetAll()
         {
-            List<CurrencyDTO> result = new ();
-            foreach (var tag in this.context.Currencies.AsNoTracking().ToList())
-            {
-                result.Add(tag.Adapt<CurrencyDTO>());
-            }
-
-            return result;
+            return this.context.Currencies
+                .AsNoTracking()
+                .ProjectToType<CurrencyDTO>();
         }
 
         public void Delete(int id)
