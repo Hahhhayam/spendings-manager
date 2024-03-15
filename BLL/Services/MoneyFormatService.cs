@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BLL.DTO.Debt;
 using BLL.DTO.MoneyFormat;
 using BLL.Exceptions;
 using BLL.Services.Abstracts;
@@ -40,15 +41,11 @@ namespace BLL.Services
             return received.Adapt<MoneyFormatDTO>();
         }
 
-        public IList<MoneyFormatDTO> GetAll()
+        public IEnumerable<MoneyFormatDTO> GetAll()
         {
-            List<MoneyFormatDTO> result = new();
-            foreach (var tag in this.context.Tags.AsNoTracking().ToList())
-            {
-                result.Add(tag.Adapt<MoneyFormatDTO>());
-            }
-
-            return result;
+            return this.context.Debt
+                .AsNoTracking()
+                .ProjectToType<MoneyFormatDTO>();
         }
 
         public void Delete(int id)

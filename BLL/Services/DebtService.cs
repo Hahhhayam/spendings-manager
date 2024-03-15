@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BLL.DTO.Currency;
 using BLL.DTO.Debt;
 using BLL.Exceptions;
 using BLL.Services.Abstracts;
@@ -40,15 +41,11 @@ namespace BLL.Services
             return received.Adapt<DebtDTO>();
         }
 
-        public IList<DebtDTO> GetAll()
+        public IEnumerable<DebtDTO> GetAll()
         {
-            List<DebtDTO> result = new ();
-            foreach (var tag in this.context.Debt.AsNoTracking().ToList())
-            {
-                result.Add(tag.Adapt<DebtDTO>());
-            }
-
-            return result;
+            return this.context.Debt
+                .AsNoTracking()
+                .ProjectToType<DebtDTO>();
         }
 
         public void Delete(int id)
