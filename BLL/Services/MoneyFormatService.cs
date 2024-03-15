@@ -12,18 +12,16 @@ namespace BLL.Services
 {
     public class MoneyFormatService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public MoneyFormatService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public MoneyFormatService(SMDbContext context)
             : base(context)
         {
-            this.validationContext = validationContext;
         }
 
         public MoneyFormatDTO Create(CreateMoneyFormatDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             MoneyFormat toCreate = dto.Adapt<MoneyFormat>();
@@ -63,6 +61,7 @@ namespace BLL.Services
 
         public MoneyFormatDTO Update(int id, MoneyFormatUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             MoneyFormat toUpdate = this.context.MoneyFormats.SingleOrDefault(e => e.Id == id)

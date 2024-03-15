@@ -13,18 +13,16 @@ namespace BLL.Services
 {
     public class TransactionsService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public TransactionsService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public TransactionsService(SMDbContext context)
             : base(context)
         {
-            this.validationContext = validationContext;
         }
 
         public TransactionDTO Create(CreateTransactionDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Transaction toCreate = dto.Adapt<Transaction>();
@@ -84,6 +82,7 @@ namespace BLL.Services
 
         public TransactionDTO Update(int id, TransactionUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Transaction toUpdate = context.Transactions.GetById(id)
