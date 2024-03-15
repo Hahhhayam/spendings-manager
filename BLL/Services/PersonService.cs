@@ -11,11 +11,9 @@ namespace BLL.Services
 {
     public class PersonService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public PersonService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public PersonService(SMDbContext context)
             : base(context)
         {
             this.validationContext = validationContext;
@@ -40,6 +38,9 @@ namespace BLL.Services
 
         public PersonDTO Update(int id, PersonUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(this.context);
+            Validator.ValidateObject(dto, this.validationContext);
+
             Person toUpdate = this.context.People.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Person));
 

@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using BLL.Services;
+using CML.ConsoleClient.Core;
+using DAL.Context;
+using Mapster;
+using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DAL.Context;
-using CML.ConsoleClient.Core;
-using Mapster;
-using MapsterMapper;
-using BLL.Services;
 
 var currentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..");
 
@@ -36,7 +37,6 @@ var builder = Host.CreateDefaultBuilder()
         services.AddScoped<TagService>();
         services.AddScoped<MoneyFormatService>();
         services.AddScoped<PersonService>();
-        
     })
     .Build();
 

@@ -12,18 +12,16 @@ namespace BLL.Services
 {
     public class CurrencyService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public CurrencyService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public CurrencyService(SMDbContext context)
             : base(context)
         {
-            this.validationContext = validationContext;
         }
 
         public CurrencyDTO Create(CreateCurrencyDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Currency toCreate = dto.Adapt<Currency>();
@@ -63,6 +61,7 @@ namespace BLL.Services
 
         public CurrencyDTO Update(int id, CurrencyUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Currency toUpdate = this.context.Currencies.SingleOrDefault(e => e.Id == id)

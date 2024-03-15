@@ -12,18 +12,16 @@ namespace BLL.Services
 {
     public class TagService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public TagService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public TagService(SMDbContext context)
             : base(context)
         {
-            this.validationContext = validationContext;
         }
 
         public TagDTO Create(CreateTagDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Tag toCreate = dto.Adapt<Tag>();
@@ -62,6 +60,7 @@ namespace BLL.Services
 
         public TagDTO Update(int id, TagUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Tag toUpdate = this.context.Tags.SingleOrDefault(e => e.Id == id)

@@ -12,18 +12,16 @@ namespace BLL.Services
 {
     public class DebtService : ContextAccess
     {
-        private readonly ValidationContext validationContext;
+        private ValidationContext validationContext { get; set; }
 
-        public DebtService(
-            SMDbContext context,
-            ValidationContext validationContext)
+        public DebtService(SMDbContext context)
             : base(context)
         {
-            this.validationContext = validationContext;
         }
 
         public DebtDTO Create(CreateDebtDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Debt toCreate = dto.Adapt<Debt>();
@@ -63,6 +61,7 @@ namespace BLL.Services
 
         public DebtDTO Update(int id, DebtUpdateDTO dto)
         {
+            this.validationContext = new ValidationContext(dto);
             Validator.ValidateObject(dto, this.validationContext);
 
             Debt toUpdate = this.context.Debt.SingleOrDefault(e => e.Id == id)
