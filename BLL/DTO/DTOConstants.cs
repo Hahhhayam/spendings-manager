@@ -12,5 +12,9 @@
         internal const int TagNameMinLength = 1;
         internal const int TransactionNameMaxLength = 200;
         internal const int TransactionNameMinLength = 5;
+        internal const int PersonNameMaxLength = 50;
+        internal const int PersonNameMinLength = 5;
+        internal const int PersonContactMaxLength = 500;
+        internal const int PersonContactMinLength = 5;
     }
 }
