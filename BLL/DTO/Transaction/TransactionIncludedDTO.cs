@@ -2,7 +2,7 @@ using BLL.DTO.Tag;
 
 namespace BLL.DTO.Transaction
 {
-    public class TransactionNestedDTO
+    public class TransactionIncludedDTO
     {
         public int Id { get; set; }
 

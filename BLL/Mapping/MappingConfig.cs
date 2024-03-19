@@ -1,23 +1,29 @@
-﻿using Mapster;
-using DAL.Entities;
-using BLL.DTO.Person;
-using BLL.DTO.Transaction;
-using BLL.DTO.Currency;
-using BLL.DTO.MoneyFormat;
-using BLL.DTO.Tag;
+﻿using BLL.DTO.Currency;
 using BLL.DTO.Debt;
+using BLL.DTO.MoneyFormat;
+using BLL.DTO.Person;
+using BLL.DTO.Tag;
+using BLL.DTO.Transaction;
+using DAL.Entities;
+using Mapster;
 
 namespace BLL.Mapping
 {
     public class MappingConfig : TypeAdapterConfig
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.ReadabilityRules",
+            "SA1101:Prefix local calls with this",
+            Justification = "*this* keyword overuse")]
         public MappingConfig()
         {
             ForType<CreateTransactionDTO, Transaction>()
-                .Map(dest => dest.Added, src => DateTime.Now);
+                .Map(dst => dst.Added, src => DateTime.Now);
 
+            // Write mapping <CreateDebtWithTransactionDTO, CreateDebtDTO>
+            // Write mapping <CreateDebtWithTransactionDTO, CreateTransactionDTO>
 
-            //Update mappings
+            // Update mappings
             ForType<TransactionUpdateDTO, Transaction>()
                 .IgnoreNullValues(true);
 

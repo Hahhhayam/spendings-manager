@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BLL.DTO.Currency;
 using BLL.DTO.Debt;
 using BLL.Exceptions;
-using BLL.Services.Abstracts;
 using DAL.Context;
 using DAL.Entities;
 using DAL.QueryExtensions;
@@ -11,24 +9,47 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
-    public class DebtService : ContextAccess
+    public class DebtService
     {
-        private ValidationContext validationContext { get; set; }
+        private readonly SMDbContext context;
 
         public DebtService(SMDbContext context)
-            : base(context)
         {
+            this.context = context;
         }
 
         public DebtDTO Create(CreateDebtDTO dto)
         {
-            this.validationContext = new ValidationContext(dto);
-            Validator.ValidateObject(dto, this.validationContext);
+            Validator.ValidateObject(dto, new ValidationContext(dto));
 
             Debt toCreate = dto.Adapt<Debt>();
 
             this.context.Add(toCreate);
             this.context.SaveChanges();
+
+            return toCreate.Adapt<DebtDTO>();
+        }
+
+        public DebtDTO CreateWithTransaction(CreateDebtWithTransactionDTO dto)
+        {
+            Validator.ValidateObject(dto, new ValidationContext(dto));
+
+            Transaction toCreateAndAllocate = dto.Adapt<Transaction>();
+
+            Debt toCreate = dto.Adapt<Debt>();
+
+            using (var t = this.context.Database.BeginTransaction())
+            {
+                this.context.Transactions.Add(toCreateAndAllocate);
+                this.context.SaveChanges();
+
+                toCreate.TransactionId = toCreateAndAllocate.Id;
+
+                this.context.Debt.Add(toCreate);
+                this.context.SaveChanges();
+
+                t.Commit();
+            }
 
             return toCreate.Adapt<DebtDTO>();
         }
@@ -41,11 +62,38 @@ namespace BLL.Services
             return received.Adapt<DebtDTO>();
         }
 
+        public DebtIncludedDTO GetIncluded(int id)
+        {
+            Debt received = this.context.Debt
+                .AsNoTracking()
+                .Include(d => d.Transaction.Currency)
+                .Include(d => d.Transaction.Format)
+                .Include(d => d.Transaction.TagTransactions)
+                        .ThenInclude(tT => tT.Tag)
+                .Include(d => d.Person)
+                .GetById(id)
+                    ?? throw new EntityNotFoundException(typeof(Debt));
+
+            return received.Adapt<DebtIncludedDTO>();
+        }
+
         public IEnumerable<DebtDTO> GetAll()
         {
             return this.context.Debt
                 .AsNoTracking()
                 .ProjectToType<DebtDTO>();
+        }
+
+        public IEnumerable<DebtIncludedDTO> GetAllIncluded()
+        {
+            return this.context.Debt
+                .AsNoTracking()
+                .Include(d => d.Transaction.Currency)
+                .Include(d => d.Transaction.Format)
+                .Include(d => d.Transaction.TagTransactions)
+                        .ThenInclude(tT => tT.Tag)
+                .Include(d => d.Person)
+                .ProjectToType<DebtIncludedDTO>();
         }
 
         public void Delete(int id)
@@ -58,8 +106,7 @@ namespace BLL.Services
 
         public DebtDTO Update(int id, DebtUpdateDTO dto)
         {
-            this.validationContext = new ValidationContext(dto);
-            Validator.ValidateObject(dto, this.validationContext);
+            Validator.ValidateObject(dto, new ValidationContext(dto));
 
             Debt toUpdate = this.context.Debt.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Debt));
