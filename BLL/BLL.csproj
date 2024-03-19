@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UseCases\**" />
+    <EmbeddedResource Remove="UseCases\**" />
+    <None Remove="UseCases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DTO\Currency\" />
-    <Folder Include="DTO\Debt\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="UseCases\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,6 +13,5 @@ namespace BLL.DTO.Transaction
         public int? FormatId { get; set; }
 
         public DateTime Added { get; set; }
-
     }
 }

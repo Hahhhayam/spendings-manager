@@ -20,6 +20,8 @@ namespace BLL.DTO.Transaction
         [Required]
         public int FormatId { get; set; }
 
+        public IEnumerable<int> TagIds { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var context = validationContext.GetRequiredService<SMDbContext>();
@@ -32,6 +34,14 @@ namespace BLL.DTO.Transaction
             if (context.MoneyFormats.Find(this.FormatId) == null)
             {
                 yield return new ValidationResult("Format not found");
+            }
+
+            foreach (int ids in this.TagIds)
+            {
+                if (context.Tags.Find(ids) == null)
+                {
+                    yield return new ValidationResult("Tag not found");
+                }
             }
         }
     }
