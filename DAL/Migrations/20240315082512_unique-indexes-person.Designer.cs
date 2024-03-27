@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(SMDbContext))]
+    [DbContext(typeof(SpendingsManagerDbContext))]
     [Migration("20240315082512_unique-indexes-person")]
     partial class uniqueindexesperson
     {

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using BLL.DTO;
-using BLL.DTO.Transaction;
+﻿using BLL.Misc.DTO;
+using BLL.Misc.DTO.Tag;
+using BLL.Misc.DTO.Transaction;
 using DAL.Context;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -9,17 +9,15 @@ namespace BLL.Services
 {
     public class StatisticsService
     {
-        private readonly SMDbContext context;
+        private readonly SpendingsManagerDbContext context;
 
-        public StatisticsService(SMDbContext context)
+        public StatisticsService(SpendingsManagerDbContext context)
         {
             this.context = context;
         }
 
         public IEnumerable<TransactionIncludedDTO> GetFiltered(FilterDTO filter)
         {
-            Validator.ValidateObject(filter, new ValidationContext(filter));
-
             var query = this.context.Transactions
                 .Include(t => t.TagTransactions)
                     .ThenInclude(t => t.Tag)
@@ -35,7 +33,7 @@ namespace BLL.Services
                 query = query.Where(t => t.Added <= filter.UpperDate);
             }
 
-            foreach (DTO.Tag.TagDTO tag in filter.Tags)
+            foreach (TagDTO tag in filter.Tags)
             {
                 query = query.Where(t => t.TagTransactions.Select(tT => tT.Tag).Any(t => t.Id == tag.Id));
             }

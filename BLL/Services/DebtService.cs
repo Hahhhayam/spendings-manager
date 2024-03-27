@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BLL.DTO.Debt;
-using BLL.Exceptions;
+using BLL.Misc.DTO.Debt;
+using BLL.Misc.Exceptions;
 using DAL.Context;
 using DAL.Entities;
 using DAL.QueryExtensions;
@@ -11,17 +11,15 @@ namespace BLL.Services
 {
     public class DebtService
     {
-        private readonly SMDbContext context;
+        private readonly SpendingsManagerDbContext context;
 
-        public DebtService(SMDbContext context)
+        public DebtService(SpendingsManagerDbContext context)
         {
             this.context = context;
         }
 
         public DebtDTO Create(CreateDebtDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Debt toCreate = dto.Adapt<Debt>();
 
             this.context.Add(toCreate);
@@ -32,8 +30,6 @@ namespace BLL.Services
 
         public DebtDTO CreateWithTransaction(CreateDebtWithTransactionDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Transaction toCreateAndAllocate = dto.Adapt<Transaction>();
 
             Debt toCreate = dto.Adapt<Debt>();
@@ -106,8 +102,6 @@ namespace BLL.Services
 
         public DebtDTO Update(int id, DebtUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Debt toUpdate = this.context.Debt.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Debt));
             toUpdate.Adapt(dto);

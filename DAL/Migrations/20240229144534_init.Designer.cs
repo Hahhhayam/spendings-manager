@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(SMDbContext))]
+    [DbContext(typeof(SpendingsManagerDbContext))]
     [Migration("20240229144534_init")]
     partial class init
     {

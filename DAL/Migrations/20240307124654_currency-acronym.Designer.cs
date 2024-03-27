@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(SMDbContext))]
+    [DbContext(typeof(SpendingsManagerDbContext))]
     [Migration("20240307124654_currency-acronym")]
     partial class currencyacronym
     {

@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using BLL.DTO.Debt;
-using BLL.DTO.Person;
-using BLL.Exceptions;
+﻿using BLL.Misc.DTO.Debt;
+using BLL.Misc.DTO.Person;
+using BLL.Misc.Exceptions;
 using DAL.Context;
 using DAL.Entities;
 using DAL.QueryExtensions;
@@ -12,17 +11,16 @@ namespace BLL.Services
 {
     public class ContactService
     {
-        private readonly SMDbContext context;
+        private readonly SpendingsManagerDbContext context;
 
-        public ContactService(SMDbContext context)
+        public ContactService(
+            SpendingsManagerDbContext context)
         {
             this.context = context;
         }
 
         public PersonDTO Create(CreatePersonDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Person toAdd = dto.Adapt<Person>();
 
             this.context.Add(toAdd);
@@ -55,8 +53,6 @@ namespace BLL.Services
 
         public PersonDTO Update(int id, PersonUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Person toUpdate = this.context.People.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Person));
             toUpdate.Adapt(dto);

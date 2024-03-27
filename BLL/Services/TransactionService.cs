@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using BLL.DTO.Currency;
-using BLL.DTO.MoneyFormat;
-using BLL.DTO.Tag;
-using BLL.DTO.Transaction;
-using BLL.Exceptions;
+﻿using BLL.Misc.DTO.Currency;
+using BLL.Misc.DTO.MoneyFormat;
+using BLL.Misc.DTO.Tag;
+using BLL.Misc.DTO.Transaction;
+using BLL.Misc.Exceptions;
 using DAL.Context;
 using DAL.Entities;
 using DAL.QueryExtensions;
@@ -15,17 +13,15 @@ namespace BLL.Services
 {
     public class TransactionService
     {
-        private readonly SMDbContext context;
+        private readonly SpendingsManagerDbContext context;
 
-        public TransactionService(SMDbContext context)
+        public TransactionService(SpendingsManagerDbContext context)
         {
             this.context = context;
         }
 
         public TransactionDTO Create(CreateTransactionDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Transaction toCreate = dto.Adapt<Transaction>();
 
             using (var t = this.context.Database.BeginTransaction())
@@ -51,8 +47,6 @@ namespace BLL.Services
 
         public MoneyFormatDTO CreateFormat(CreateMoneyFormatDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             MoneyFormat toCreate = dto.Adapt<MoneyFormat>();
 
             this.context.Add(toCreate);
@@ -63,8 +57,6 @@ namespace BLL.Services
 
         public CurrencyDTO CreateCurrency(CreateCurrencyDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Currency toCreate = dto.Adapt<Currency>();
 
             this.context.Add(toCreate);
@@ -75,8 +67,6 @@ namespace BLL.Services
 
         public TagDTO CreateTag(CreateTagDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Tag toCreate = dto.Adapt<Tag>();
             this.context.Add(toCreate);
             this.context.SaveChanges();
@@ -168,8 +158,6 @@ namespace BLL.Services
 
         public TransactionDTO Update(int id, TransactionUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Transaction toUpdate = this.context.Transactions.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Transaction));
             toUpdate.Adapt(dto);
@@ -180,8 +168,6 @@ namespace BLL.Services
 
         public MoneyFormatDTO UpdateFormat(int id, MoneyFormatUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             MoneyFormat toUpdate = this.context.MoneyFormats.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(MoneyFormat));
             toUpdate.Adapt(dto);
@@ -192,8 +178,6 @@ namespace BLL.Services
 
         public CurrencyDTO UpdateCurrency(int id, CurrencyUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Currency toUpdate = this.context.Currencies.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Currency));
             toUpdate.Adapt(dto);
@@ -204,8 +188,6 @@ namespace BLL.Services
 
         public TagDTO UpdateTag(int id, TagUpdateDTO dto)
         {
-            Validator.ValidateObject(dto, new ValidationContext(dto));
-
             Tag toUpdate = this.context.Tags.SingleOrDefault(e => e.Id == id)
                     ?? throw new EntityNotFoundException(typeof(Tag));
             toUpdate.Adapt(dto);

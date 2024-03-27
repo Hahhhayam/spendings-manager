@@ -23,7 +23,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 var builder = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
-        services.AddDbContext<SMDbContext>(options =>
+        services.AddDbContext<SpendingsManagerDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
@@ -32,11 +32,9 @@ var builder = Host.CreateDefaultBuilder()
         services.AddSingleton(TypeAdapterConfig.GlobalSettings);
         services.AddScoped<IMapper, ServiceMapper>();
         services.AddScoped<DebtService>();
-        services.AddScoped<TransactionsService>();
-        services.AddScoped<CurrencyService>();
-        services.AddScoped<TagService>();
-        services.AddScoped<MoneyFormatService>();
-        services.AddScoped<PersonService>();
+        services.AddScoped<TransactionService>();
+        services.AddScoped<ContactService>();
+        services.AddScoped<StatisticsService>();
     })
     .Build();
 
