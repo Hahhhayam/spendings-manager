@@ -93,8 +93,8 @@ namespace BLL.Tests
             Assert.ThrowsException<EntityNotFoundException>(act);
         }
 
-        // get debts
-        public void GetDebts_CorrectId_Successfully() 
+        // get correct DebtIncludedDTOs
+        public void GetDebts_CorrectId_AllIncludes() 
         {
             context.AddRange(
                 new Person() { Id = 2, Name = "Mom", Contact = "https://mail.google.com/mail/u/0/?pli=1#inbox" },

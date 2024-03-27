@@ -39,7 +39,7 @@ namespace BLL.Services
             return received.Adapt<PersonDTO>();
         }
 
-        public IEnumerable<DebtDTO> GetDebts(int id)
+        public IEnumerable<DebtIncludedDTO> GetDebts(int id)
         {
             throw new NotImplementedException();
         }
